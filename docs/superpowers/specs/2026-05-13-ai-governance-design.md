@@ -52,6 +52,23 @@ infouno-base/
 
 Cada área del proyecto tiene exactamente un archivo de reglas en `rules/`. Cuando se agrega un nuevo componente, se agrega su `.md` en `rules/` siguiendo el proceso definido en `templates/component-registration.md`. No hay reglas dispersas.
 
+### Campo `last-updated` en rules/ y guardrails/
+
+Todo archivo dentro de `rules/` y `guardrails/` debe tener este campo al tope del archivo:
+
+```
+last-updated: YYYY-MM-DD
+```
+
+Cuando la AI modifica cualquiera de estos archivos en una tarea, debe:
+1. Actualizar el campo `last-updated` con la fecha del día
+2. Incluir en el commit message el nombre del archivo y la fecha:
+   ```
+   rules/plugin-infouno-custom.md (2026-05-13)
+   ```
+
+Esto permite saber qué versión de las reglas estaba vigente en cada punto del historial de git.
+
 ---
 
 ## 2. Branch Management
@@ -153,6 +170,9 @@ Referenciado desde `CLAUDE.md`. Se ejecuta al inicio de cada tarea.
 1. ORIENTACIÓN
    - Leer taxonomy.md
    - Leer branch-registry.md
+   - Correr git branch -a y comparar con branch-registry.md
+     → Si hay ramas en git que no están en el registry, o en el registry que no existen
+       en git: PARAR y reportar la discrepancia antes de continuar.
    - Verificar rama actual (git branch --show-current)
 
 2. IDENTIFICAR ÁREA DE TRABAJO
@@ -167,6 +187,8 @@ Referenciado desde `CLAUDE.md`. Se ejecuta al inicio de cada tarea.
 4. CARGAR CHECKS RELEVANTES
    - Inicio de tarea   → leer checks/pre-task.md
    - Va a mergear      → leer checks/pre-merge.md
+   IMPORTANTE: si alguno de estos archivos existe pero está vacío o sin contenido
+   procesable, NO continuar — parar y reportar al usuario antes de seguir.
 
 5. CARGAR EXECUTION TEMPLATE
    - leer templates/execution.md
@@ -268,5 +290,8 @@ Checklist obligatorio cada vez que se introduce algo nuevo al proyecto.
 - **`.claude/` como hub de gobernanza:** convención nativa de Claude Code, mantiene root limpio, ya contiene `settings.local.json`.
 - **1:1 componente → rule file:** escala sin ambigüedad. Nuevo componente = nuevo archivo en `rules/`.
 - **Branch registry como fuente de verdad:** evita confusión en proyectos con múltiples branches activas.
+- **Sync git ↔ registry al inicio:** correr `git branch -a` y comparar con el registry en cada tarea garantiza que el registry nunca quede desincronizado de la realidad.
+- **Archivos vacíos = parar, no continuar:** si `checks/pre-task.md` o `checks/pre-merge.md` no tienen contenido procesable, el modelo para y reporta. Procesar un archivo vacío como si tuviera contenido es un error silencioso.
+- **`last-updated` en rules/ y guardrails/:** permite auditar qué versión de las reglas estaba vigente en cada commit del historial.
 - **Confirmation gates en pasos 2 y 4 del execution template:** el modelo nunca actúa sin haber mostrado su plan.
 - **component-registration.md en `templates/`:** es un template aplicado al proyecto, no un doc de referencia estático.
