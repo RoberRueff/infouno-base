@@ -34,8 +34,9 @@ infouno-base/
 │   │   ├── pre-task.md                    ← Qué revisar antes de arrancar una tarea
 │   │   └── pre-merge.md                   ← Qué verificar antes de mergear
 │   │
+│   ├── context-loader.md                  ← Protocolo de recolección de contexto (referenciado desde CLAUDE.md)
+│   │
 │   └── templates/
-│       ├── context-loader.md              ← Pasos para recolectar contexto relevante
 │       ├── execution.md                   ← Template de ejecución (lineamientos fijos)
 │       ├── branch.md                      ← Convención de nombres y flujo de branches
 │       └── component-registration.md      ← Checklist para introducir nuevos componentes
@@ -162,7 +163,7 @@ La AI opera con git local libremente. GitHub como plataforma queda fuera de su s
 
 ## 4. Context Loader
 
-Archivo: `.claude/templates/context-loader.md`
+Archivo: `.claude/context-loader.md`
 
 Referenciado desde `CLAUDE.md`. Se ejecuta al inicio de cada tarea.
 
@@ -191,7 +192,7 @@ Referenciado desde `CLAUDE.md`. Se ejecuta al inicio de cada tarea.
    procesable, NO continuar — parar y reportar al usuario antes de seguir.
 
 5. CARGAR EXECUTION TEMPLATE
-   - leer templates/execution.md
+   - leer .claude/templates/execution.md
 
 6. CONFIRMAR ANTES DE ARRANCAR
    - Resumir en 2-3 líneas: tarea entendida, área de trabajo, branch propuesta
